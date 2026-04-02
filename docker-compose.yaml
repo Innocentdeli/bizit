@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  # 1. CORE ORGANISM (Main Loop)
+  bizit-core:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: bizit_core
+    depends_on:
+      - redis
+      - rabbitmq
+      - neo4j
+    environment:
+      - USE_REDIS=true
+      - REDIS_HOST=redis
+      - NEO4J_URI=bolt://neo4j:7687
+      - RABBITMQ_HOST=rabbitmq
+    command: ["python", "backend/main_loop.py"]
+    restart: always
+
+  # 2. HUMAN INTERFACE API
+  bizit-api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: bizit_api
+    depends_on:
+      - redis
+    ports:
+      - "8000:8000"
+    environment:
+      - USE_REDIS=true
+      - REDIS_HOST=redis
+    command: ["uvicorn", "human_interface.dashboard_api:app", "--host", "0.0.0.0", "--port", "8000"]
+
+  # 3. DASHBOARD FRONTEND
+  bizit-dashboard:
+    build:
+      context: .
+      dockerfile: frontend/dashboard/Dockerfile
+    container_name: bizit_dashboard
+    ports:
+      - "3000:3000"
+    depends_on:
+      - bizit-api
+
+  # 4. INFRASTRUCTURE
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  neo4j:
+    image: neo4j:4.4
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/password

@@ -1,0 +1,9 @@
+Date: 2026-02-09
+Business: Sadiq's Logistics Kano
+Summary: Weekly expenditure report.
+Diesel: 850,000 NGN
+Tires: 120,000 NGN
+Repairs: 45,000 NGN
+Notes: Market prices for tires in Kano are up 15%. Diesel availability is stable but predicted to spike by month-end.
+Profit: 1,200,000 NGN
+Tax Reserved: 90,000 NGN

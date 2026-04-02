@@ -1,0 +1,33 @@
+# Production Configuration for BIZIT
+# Created for local demo to trigger Mock Data
+
+shopify:
+  enabled: false
+
+salesforce:
+  enabled: false
+
+sap:
+  enabled: false
+
+iot:
+  enabled: false # Disabling IoT triggers the MockCollector fallback!
+
+rabbitmq:
+  host: localhost
+  port: 5672
+  enabled: false # Disable for simple demo loop
+
+neo4j:
+  uri: bolt://localhost:7687
+  username: neo4j
+  password: password
+  enabled: true
+
+embeddings:
+  enabled: false # Disable to save compute during demo
+
+gemini:
+  enabled: true # Live reasoning activated!
+  model: "gemini-3-pro-preview"
+  api_key: "AIzaSyDoJqB6CLyNWHhJNgBO3PEwGdf5aAaj_RI"

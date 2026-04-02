@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bizit-core
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bizit-core
+  template:
+    metadata:
+      labels:
+        app: bizit-core
+    spec:
+      containers:
+      - name: bizit-core
+        image: bizit-backend:latest
+        command: ["python", "backend/main_loop.py"]
+        env:
+        - name: USE_REDIS
+          value: "true"
+        - name: REDIS_HOST
+          value: "redis-service"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bizit-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bizit-api
+  template:
+    metadata:
+      labels:
+        app: bizit-api
+    spec:
+      containers:
+      - name: bizit-api
+        image: bizit-backend:latest
+        command: ["uvicorn", "human_interface.dashboard_api:app", "--host", "0.0.0.0", "--port", "8000"]
+        ports:
+        - containerPort: 8000
+        env:
+        - name: USE_REDIS
+          value: "true"
+        - name: REDIS_HOST
+          value: "redis-service"

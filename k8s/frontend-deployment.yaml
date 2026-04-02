@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bizit-dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bizit-dashboard
+  template:
+    metadata:
+      labels:
+        app: bizit-dashboard
+    spec:
+      containers:
+      - name: bizit-dashboard
+        image: bizit-frontend:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NEXT_PUBLIC_API_URL
+          value: "http://bizit-api-service:80"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bizit-dashboard-service
+spec:
+  selector:
+    app: bizit-dashboard
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer

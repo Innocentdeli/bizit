@@ -1,0 +1,46 @@
+# Node
+node_modules/
+dist/
+build/
+.next/
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Project specific
+backend_debug.log
+backend_log*.txt
+server_log.txt
+startup_error*.txt
+organism_state.json
+test_batch.zip
+gemini_models_full.txt

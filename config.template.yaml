@@ -1,0 +1,62 @@
+# BIZIT Configuration File
+# Copy this to config.yaml and fill in your credentials
+
+# Shopify E-commerce Integration
+shopify:
+  enabled: false  # Set to true to activate
+  shop_url: "https://your-store.myshopify.com"
+  access_token: "shpat_xxxxxxxxxxxxxxxxxxxxx"
+
+# Salesforce CRM Integration
+salesforce:
+  enabled: false  # Set to true to activate
+  instance_url: "https://your-instance.salesforce.com"
+  access_token: "00D...xxxxxxxxxxxxx"
+  # To get access token: Use OAuth 2.0 flow or Connected App
+
+# SAP ERP Integration
+sap:
+  enabled: false  # Set to true to activate
+  base_url: "https://your-sap-server.com:port"
+  username: "your_sap_username"
+  password: "your_sap_password"
+
+# IoT Sensors (MQTT)
+iot:
+  enabled: true  # Always enabled (uses simulation if no broker)
+  broker: "localhost"
+  port: 1883
+  topics:
+    - "warehouse/+/temperature"
+    - "logistics/+/location"
+    - "equipment/+/status"
+
+# RabbitMQ Event Streaming
+rabbitmq:
+  enabled: true
+  host: "localhost"
+  port: 5672
+  exchange: "bizit_events"
+  username: "guest"
+  password: "guest"
+
+# Neo4j Event Graph
+neo4j:
+  enabled: false  # Set to true when Neo4j is running
+  uri: "bolt://localhost:7687"
+  username: "neo4j"
+  password: "password"
+
+# Semantic Embeddings
+embeddings:
+  enabled: true
+  model: "all-MiniLM-L6-v2"  # Lightweight sentence transformer
+  # Alternative models:
+  # - "all-mpnet-base-v2" (higher quality, slower)
+  # - "paraphrase-multilingual-MiniLM-L12-v2" (multilingual)
+
+# Learning & Evolution
+learning:
+  enabled: true
+  policy_update_frequency: 100  # Update agent weights every N events
+  exploration_rate: 0.1  # Epsilon for exploration vs exploitation

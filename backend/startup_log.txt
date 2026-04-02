@@ -1,0 +1,37 @@
+python : Traceback (most recent call last):
+At line:1 char:22
++ ... ONPATH="."; python -c "import uvicorn; from 
+human_interface.dashboard ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Trac 
+   eback (most recent call last)::String) [], Re  
+  moteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "<string>", line 1, in <module>
+    import uvicorn; from 
+human_interface.dashboard_api import app; 
+uvicorn.run(app, host='0.0.0.0', port=8001)
+                    
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\titan\OneDrive\Desktop\bizit\back
+end\human_interface\dashboard_api.py", line 5, in 
+<module>
+    from cognitive_kernel.scenario_simulator 
+import ScenarioSimulator
+  File "C:\Users\titan\OneDrive\Desktop\bizit\back
+end\cognitive_kernel\scenario_simulator.py", line 
+5, in <module>
+    class ScenarioSimulator:
+    ...<33 lines>...
+            }
+  File "C:\Users\titan\OneDrive\Desktop\bizit\back
+end\cognitive_kernel\scenario_simulator.py", line 
+14, in ScenarioSimulator
+    def run_what_if(self, variables: Dict[str, 
+float]) -> Dict[str, Any]:
+                                                  
+                  ^^^
+NameError: name 'Any' is not defined. Did you 
+mean: 'any'?
