@@ -37,7 +37,7 @@ app.add_middleware(
 # Initialize with minimal dependencies
 state_manager = OrganismState()
 llm_client = LocalLLMClient()
-gemini_client = GeminiClient(model_name="gemini-1.5-pro") 
+gemini_client = GeminiClient(model_name="gemini-2.5-flash") 
 search_tool = WebSearchTool()
 
 # Mock GraphManager to avoid Neo4j dependency

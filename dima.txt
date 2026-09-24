@@ -1,0 +1,96 @@
+Here is the complete walkthrough of **how a company uses Dima** from day one to continuous, autonomous scaling.
+
+---
+
+# 🌐 How a Company Uses Dima
+
+Dima is not a passive SaaS dashboard or a course platform—it is an **Autonomous AI Growth Operator**. It replaces a fragmented $20,000/month growth agency stack (CMO, media buyers, copywriters, data analysts, and CRM managers) with an intelligent, self-optimizing cognitive engine.
+
+```mermaid
+flowchart LR
+    A["1. Intake & DNA\n(Data Upload)"] --> B["2. Organism Diagnosis\n(Health & Prescription)"]
+    B --> C["3. Domain Sync\n(SPF / DKIM / DMARC)"]
+    C --> D["4. 12 Growth Engines\n(Autonomous Execution)"]
+    D --> E["5. Inbound & CRM\n(AI Sub-Agent Auto-Reply)"]
+    E --> F["6. AI Boardroom & Simulator\n(Strategic Scaling)"]
+```
+
+---
+
+## Step 1: Onboarding & Growth DNA Intake
+
+When a company registers on Dima, it completes the **Growth DNA Wizard**:
+
+1. **Brand Profile**: Enter company name, website, business model (SaaS, E-Commerce, Local Service, Marketplace, Agency, Creator, SME, Startup), and target audience.
+2. **Historical Data Dropzone**: Upload existing CSVs, customer lists, ad spend history, or traffic metrics.
+3. **Primary Growth Goal**: Select their immediate focus (*Customer Acquisition, Retention & LTV, Organic Virality, Conversion Optimization, or Marketplace Liquidity*).
+4. **Autonomous Organism Diagnosis**: The Organism analyzes their data, calculates a **Health Score (0–100)**, identifies their primary growth bottleneck, and prescribes the exact starting growth engine with an instant preview campaign.
+
+---
+
+## Step 2: Domain Synchronization & Email Infrastructure
+
+Before launching outbound acquisition or automated lifecycle loops:
+- The company navigates to **Domain Sync** (`/portal/marketing/domain-sync`).
+- Dima generates ready-to-use DNS records (**SPF, DKIM, DMARC, MX**).
+- Once DNS is connected, Dima verifies domain health, ensuring maximum email deliverability and protecting sender reputation for cold outreach and customer retention sequences.
+
+---
+
+## Step 3: Activating the 12 Autonomous Engines
+
+Inside the **Growth Engine Studio** (`/portal/growth-engine`), companies have access to 12 specialized growth engines infused with top agency methodologies:
+
+| Agency Superpower | Autonomous Engine in Dima | What It Does for the Business |
+| :--- | :--- | :--- |
+| **Ogilvy & WPP** | Brand Architecture & Cognitive Resonance Engine | Generates core positioning, value propositions, high-converting copy angles, and brand messaging. |
+| **VaynerMedia & BAMF** | 3×3×3 Creative Matrix & Content Velocity Engine | Creates 27 variations of content (3 hooks × 3 formats × 3 CTAs) ready for social syndication. |
+| **Reforge** | Growth Loops & Retention Architecture | Constructs viral loops, referral mechanisms, and cohort retention sequences. |
+| **KlientBoost** | Precision Ad Engine & Landing Page CRO | Designs multi-channel paid ad campaigns, headline variants, and landing page split tests. |
+
+Companies can run individual engines or click **"Run All 12 Engines"** and export an executive-ready **Growth Blueprint (PDF)**.
+
+---
+
+## Step 4: Real-Time Market Intelligence & Gap Capture
+
+Businesses don't need to manually research competitors:
+- **Market Intel Hub** (`/portal/market-intel`): Monitors local and category supply vs. demand, saturation scores, and underserved customer searches.
+- **Recommendations & Demand Surges** (`/portal/analytics`): Alerts the business when search demand for their services surges (e.g., *"+45% demand for emergency plumbing this week"*).
+- **Executive Auto-Deploy**: The business clicks **"Capture Opportunity"**, and Dima's Autonomous Executive automatically provisions targeted ad campaigns and boosts ranking visibility.
+
+---
+
+## Step 5: Day-to-Day Inbound Operations & Autonomous CRM
+
+When leads, inquiries, and reviews arrive:
+- **CRM Inquiries** (`/portal/crm` → *Inquiries Tab*): Customer messages are captured in real-time. Dima's background AI sub-agents automatically draft and send tailored responses based on the business's profile.
+- **AI Appointments** (`/portal/crm` → *Appointments Tab*): Customers book slots, and Dima automatically confirms bookings and dispatches calendar invitations.
+- **Social Auto-Publishing** (`/portal/marketing/social`): Dima listens for positive 5-star customer reviews, extracts compelling testimonials, and automatically generates high-engagement social media posts.
+
+---
+
+## Step 6: Strategic Governance (AI Boardroom & Scenario Simulator)
+
+For high-level executive decision-making:
+- **AI Boardroom** (`/portal/ai-boardroom`): The company's founder or leadership inputs a strategic dilemma (e.g., *"Should we expand into B2B enterprise contracts or double down on self-serve SaaS?"*). Six specialized AI executives debate the decision:
+  - 🧠 **Chief Strategy Officer** (Market positioning)
+  - 💰 **Chief Financial Officer** (Unit economics & runway)
+  - 📈 **Chief Revenue Officer** (Sales pipeline impact)
+  - 🎯 **Chief Marketing Officer** (Customer acquisition cost)
+  - ⚙️ **Chief Operations Officer** (Fulfillment feasibility)
+  - 🩺 **AI Systems Doctor** (Risk & failure points)
+  The Boardroom synthesizes all perspectives into a unified consensus action plan with downloadable minutes.
+- **Digital Twin Scenario Simulator** (`/portal/growth-simulator`): Uses Monte Carlo simulation across variable sliders (*Ad Spend Multiplier, Pricing Shift %, Marketing Investment*) to forecast **Optimistic, Baseline, and Pessimistic 90-day revenue outcomes**.
+
+---
+
+## 📊 Summary: Business Action vs. Dima Autonomous Action
+
+| Business Responsibility (What You Do) | Dima Autonomous Action (What the AI Does) |
+| :--- | :--- |
+| **Input core vision & upload existing metrics** | Diagnoses health score, bottlenecks, and generates custom campaigns |
+| **Verify DNS records once** | Handles email warming, authentication, and deliverability |
+| **Approve strategic campaigns & budget** | Writes copy, targets audiences, creates ad matrices, and tracks CTR |
+| **Fulfill customer orders / services** | Auto-replies to inquiries, books appointments, and turns reviews into social content |
+| **Set overarching business goals** | 6-Agent Boardroom debates tactics and Monte Carlo simulator projects risk/reward |

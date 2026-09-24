@@ -1,11 +1,25 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
 from typing import List, Optional
 import time
-from database.database import get_db
+from database.database import get_db, SessionLocal
 from database.models import Review, Business
+from organism.sub_agent import process_review_with_subagent
 
 router = APIRouter()
+
+def _run_review_subagent_bg(review_id: int, business_id: str):
+    import asyncio
+    db = SessionLocal()
+    try:
+        review = db.query(Review).filter(Review.id == review_id).first()
+        business = db.query(Business).filter(Business.id == business_id).first()
+        if review and business:
+            asyncio.run(process_review_with_subagent(db, review, business))
+    except Exception as e:
+        db.rollback()
+    finally:
+        db.close()
 
 @router.get("/{business_id}")
 async def get_reviews(business_id: str, db: Session = Depends(get_db)):
@@ -16,7 +30,7 @@ async def get_reviews(business_id: str, db: Session = Depends(get_db)):
     return {"status": "success", "count": len(reviews), "reviews": reviews}
 
 @router.post("/")
-async def add_review(review_data: dict, db: Session = Depends(get_db)):
+async def add_review(review_data: dict, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     """
     Module 5: Submit a new review to the database
     Sub-Feature: Basic Sentiment Analysis
@@ -49,6 +63,11 @@ async def add_review(review_data: dict, db: Session = Depends(get_db)):
         business.rating = ((business.rating * (business.review_count - 1)) + new_review.rating) / business.review_count
 
     db.commit()
+    db.refresh(new_review)
+
+    if business and business.ai_agent_enabled:
+        background_tasks.add_task(_run_review_subagent_bg, new_review.id, business.id)
+
     return {"status": "success", "review_id": new_review.id, "sentiment": sentiment}
 
 @router.post("/{review_id}/vote")

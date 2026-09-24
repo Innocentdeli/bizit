@@ -18,7 +18,7 @@ class IntelligenceEngine:
     """
     
     def __init__(self):
-        self.gemini = GeminiClient(model_name="gemini-1.5-flash")
+        self.gemini = GeminiClient(model_name="gemini-2.5-flash")
     
     def calculate_verdict(self, signals: MarketSignals) -> Dict[str, Any]:
         """

@@ -5,7 +5,7 @@ from cognitive_kernel.gemini_client import GeminiClient
 
 router = APIRouter()
 # Initialize Client (simulated singleton)
-client = GeminiClient(model_name="gemini-1.5-flash")
+client = GeminiClient(model_name="gemini-2.5-flash")
 
 class ChatRequest(BaseModel):
     query: str

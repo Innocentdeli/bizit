@@ -20,7 +20,7 @@ import time
 
 # Initialize dependencies
 state_manager = OrganismState()
-gemini_client = GeminiClient(model_name="gemini-1.5-pro")
+gemini_client = GeminiClient(model_name="gemini-2.5-flash")
 search_tool = WebSearchTool()
 intelligence_engine = IntelligenceEngine()
 

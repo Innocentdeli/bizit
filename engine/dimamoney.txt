@@ -1,0 +1,89 @@
+Searched for "role"
+Viewed schema.prisma:605-750
+Viewed schema.prisma:750-855
+
+Beyond merchants and brand owners scaling their sales, Dima is architected as a **multi-sided economic engine**. Anyone with digital skills, physical devices, or audience reach can earn reliable income on the platform.
+
+Here is a breakdown of **who else can make money on Dima**, how they earn, and the safety guarantees that protect their payouts:
+
+---
+
+### 1. Short-Form Video Creators & UGC Actors
+* **Who they are:** TikTokers, Instagram Reel creators, video editors, and on-camera product reviewers.
+* **How they make money:**
+  * **UGC Product Bounties:** Merchants fund creative work orders (e.g. ₦35,000 for 3 TikTok/Reel try-on videos).
+  * **0–3s Hook Optimization:** Creators get AI pre-flight audits to ensure their videos stop thumb-scrolling and pass quality checks on the first submission.
+* **Payout Guarantee:** 100% of the bounty is locked in escrow before recording begins. Once the merchant reviews and approves the deliverable, funds disburse instantly.
+
+---
+
+### 2. QA Diagnostic Specialists & Real-Device Testers
+* **Who they are:** Tech enthusiasts, software testers, and smartphone owners who test pre-release apps and stores.
+* **How they make money:**
+  * **Real Hardware Bug Bounties:** Test merchants' new mobile apps, Shopify checkouts, and web stores on physical hardware (iPhone 16 Pro, Google Pixel 9, Samsung Galaxy, Mac M3, Windows PC).
+  * **P0 Blocker Detection:** Replicate broken payment flows, broken promo codes, or crash blockers and submit verified proof (e.g., Loom screen recordings).
+  * **Community Bonus Pool:** Top testers compete on the global leaderboard to claim shares of the **$5,000 Monthly Community Bonus Pool**.
+* **Average Earnings:** ₦15,000 – ₦65,000 per verified audit run.
+
+---
+
+### 3. Commission Distributors & Everyday Smartphone Users (The Bounty Network)
+* **Who they are:** College students, community members, WhatsApp status posters, and everyday buyers.
+* **How they make money:**
+  * **Pay-Per-Sale Link Distribution:** Merchants deposit campaign bounties (e.g. "Earn ₦2,500 per pair of luxury shoes sold").
+  * **1-Click Tracking Links:** Distributors generate short links (`dima.co/r/[code]`) and share them in WhatsApp groups, TikTok bios, or Telegram channels.
+  * **Automated Conversion Attribution:** When someone purchases through their link, webhook attribution verifies the sale and credits the distributor's wallet (`DistributorWallet`).
+* **Cashout Speed:** Sub-60-second withdrawals directly to local bank accounts (via Paystack) or USDC stablecoins.
+
+---
+
+### 4. Graphic Designers & Ad Creative Architects
+* **Who they are:** Figma designers, visual artists, and Canva power users.
+* **How they make money:**
+  * **High-Converting Ad Carousels:** Design Instagram carousels, Google display banners, and Facebook feed graphics.
+  * **1-Click Brand Kits:** Access high-resolution logos, brand color codes, and fonts automatically extracted by Dima, eliminating endless back-and-forth emails.
+  * **Locked Briefs:** Clients cannot introduce unpaid scope creep — work specifications are fixed and protected by escrow milestone contracts.
+
+---
+
+### 5. Direct Response Copywriters & VSL Scriptwriters
+* **Who they are:** Persuasive writers who specialize in turning traffic into paying customers.
+* **How they make money:**
+  * **Landing Page & Ad Copy Bounties:** Write high-converting headlines, WhatsApp broadcast sequences, email funnels, and video sales letter (VSL) scripts.
+  * **Performance Royalties:** Copywriters can negotiate milestone fees plus performance bonus percentages based on campaign ROAS.
+
+---
+
+### 6. Paid Media Buyers & Ad Account Architects
+* **Who they are:** Meta Ads, Google Ads, and TikTok Ads media buyers.
+* **How they make money:**
+  * **Campaign Architecture:** Build ad structures, configure pixel events, and set audience targeting.
+  * **Automated Guardrails:** Dima’s Autonomous Executive applies automated stop-losses, preventing ad spend blowouts and ensuring media buyers hit target CAC.
+  * **Retainers & Scale Fees:** Earn monthly management retainers and revenue share bonuses as campaign budgets scale.
+
+---
+
+### 7. Non-Competing Businesses via Cross-Brand Partnerships
+* **Who they are:** Two complementary merchants (e.g. an organic skincare brand and a luxury spa, or a gym and a healthy meal delivery service).
+* **How they make money:**
+  * **Cross-Business Referral Engine (`CrossBusinessPartnership`):** Brands cross-promote each other to their existing customer bases.
+  * **Automated Revenue Share (5%–15%):** When Customer A buys from Brand B via an integrated receipt recommendation or post-checkout coupon, the referring brand earns an automated commission without complex legal paperwork.
+
+---
+
+### 8. Digital Agencies & Fractional CMOs
+* **Who they are:** Marketing agencies and freelance consultants managing multiple client brands.
+* **How they make money:**
+  * **Arbitrage & Scale:** Agencies use Dima’s Autonomous Marketing OS and Boardroom to run strategy and analytics for 10+ clients with zero headcount overhead.
+  * **Vetted Talent Offloading:** They charge client retainers while assigning specific execution tasks (video shooting, ad design, QA) to Dima’s on-demand specialist network.
+
+---
+
+### Summary of Platform Protections for All Earners
+
+| Protection | How It Works |
+| :--- | :--- |
+| **Upfront Escrow Lock** | You never start work hoping the client will pay — funds are locked before you lift a finger. |
+| **72-Hour Auto-Release** | If a merchant fails to review completed work within 72 hours, escrow auto-releases into your wallet. |
+| **Anti-Dispute Scope Protection** | Work orders are locked to unambiguous deliverable specs; clients cannot add surprise demands. |
+| **Instant Multi-Currency Payouts** | Cash out in seconds via **Local Bank Transfer (Paystack)** or **USDC Stablecoins (Base / Polygon)**. |

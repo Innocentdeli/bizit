@@ -1,0 +1,734 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id // Maps to Clerk User ID
+  email     String   @unique
+  firstName String?
+  lastName  String?
+  role      String   @default("Team Member") // Admin, Team Member, Client, Analyst, Growth Manager
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  leads      Lead[]
+  tasks      Task[]
+  activities Activity[]
+
+  communityPosts     CommunityPost[]
+  communityComments  CommunityComment[]
+  communityReactions CommunityReaction[]
+  communityProfile   CommunityProfile?
+
+  organizedEvents  CommunityEvent[]         @relation("EventOrganizer")
+  eventAttendances CommunityEventAttendee[]
+  notifications    Notification[]
+  subscriptions    Subscription[]
+  invoices         Invoice[]
+
+  teamMembers      TeamMember[]
+  assignedTeamTasks TeamTask[]
+  teamMessages     TeamMessage[]
+  teamActivities   TeamActivity[]
+
+  growthStrategies GrowthStrategy[]
+}
+
+model Lead {
+  id      String  @id @default(cuid())
+  name    String
+  company String
+  email   String?
+  phone   String?
+  stage   String  @default("New Lead") // New Lead, Contacted, Discovery, Proposal, Negotiation, Closed Won, Closed Lost
+  value   Float   @default(0)
+  source  String? // e.g., Inbound, Outbound, Referral
+  tags    String? // Comma separated tags
+
+  // Relations
+  assigneeId String?
+  assignee   User?   @relation(fields: [assigneeId], references: [id])
+
+  tasks      Task[]
+  activities Activity[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  dueDate     DateTime?
+  status      String    @default("pending") // pending, completed
+
+  // Relations
+  leadId String
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  assigneeId String?
+  assignee   User?   @relation(fields: [assigneeId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Activity {
+  id      String @id @default(cuid())
+  type    String // note, email, call, stage_change
+  content String
+
+  // Relations
+  leadId String
+  lead   Lead   @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model CopyDraft {
+  id           String   @id @default(cuid())
+  userId       String
+  templateType String // ad_copy, social_caption, email, landing_page, headline, cta, seo_desc, product_desc
+  title        String
+  content      String
+  toneScore    Int?
+  toneLabel    String?
+  platform     String?
+  brandTone    String?
+  objective    String?
+  createdAt    DateTime @default(now())
+}
+
+model Campaign {
+  id        String    @id @default(cuid())
+  userId    String // Links to Clerk User
+  name      String
+  platform  String // Google Ads, Meta Ads, LinkedIn, etc.
+  status    String    @default("active") // active, paused, completed
+  budget    Float     @default(0)
+  startDate DateTime
+  endDate   DateTime?
+
+  metrics CampaignMetric[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CampaignMetric {
+  id         String   @id @default(cuid())
+  campaignId String
+  campaign   Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  date DateTime // The day this metric represents
+
+  spend       Float @default(0)
+  impressions Int   @default(0)
+  clicks      Int   @default(0)
+  conversions Int   @default(0)
+  revenue     Float @default(0)
+  bounces     Int   @default(0)
+  churns      Int   @default(0)
+
+  createdAt DateTime @default(now())
+
+  @@unique([campaignId, date])
+}
+
+model Workflow {
+  id          String  @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  isActive    Boolean @default(false)
+
+  nodes      WorkflowNode[]
+  edges      WorkflowEdge[]
+  executions WorkflowExecution[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WorkflowNode {
+  id         String   @id // The ID provided by React Flow
+  workflowId String
+  workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+
+  type      String // "trigger", "action", "condition"
+  label     String
+  positionX Float
+  positionY Float
+
+  // Stored as JSON string
+  data String @default("{}") // Stores the configuration (e.g. email subject, webhook url)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WorkflowEdge {
+  id         String   @id // The ID provided by React Flow
+  workflowId String
+  workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+
+  sourceId     String
+  targetId     String
+  sourceHandle String?
+  targetHandle String?
+
+  createdAt DateTime @default(now())
+}
+
+model WorkflowExecution {
+  id         String   @id @default(cuid())
+  workflowId String
+  workflow   Workflow @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+
+  status      String // "pending", "running", "completed", "failed"
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+
+  // Log events stored as JSON string
+  logs String @default("[]")
+
+  createdAt DateTime @default(now())
+}
+
+model CommunityChannel {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  category    String   @default("General") // e.g. "General", "Marketing", "Founders"
+  isPrivate   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  posts CommunityPost[]
+}
+
+model CommunityPost {
+  id        String           @id @default(cuid())
+  channelId String
+  channel   CommunityChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  title    String?
+  content  String
+  isPinned Boolean @default(false)
+
+  comments  CommunityComment[]
+  reactions CommunityReaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CommunityComment {
+  id     String        @id @default(cuid())
+  postId String
+  post   CommunityPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  content String
+
+  // Self-relation for nested comments
+  parentId String?
+  parent   CommunityComment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies  CommunityComment[] @relation("CommentReplies")
+
+  reactions CommunityReaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CommunityReaction {
+  id    String @id @default(cuid())
+  emoji String
+
+  postId String?
+  post   CommunityPost? @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  commentId String?
+  comment   CommunityComment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  // We enforce unique reaction per user per post or comment in application logic
+  // since PostgreSQL doesn't allow optional fields in @@unique constraints in a simple way
+}
+
+model CommunityProfile {
+  id     String @id @default(cuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  bio       String?
+  avatarUrl String?
+  xp        Int     @default(0)
+  level     Int     @default(1)
+  role      String  @default("MEMBER") // MEMBER, MODERATOR, ADMIN
+
+  mentorshipsAsMentor Mentorship[] @relation("Mentor")
+  mentorshipsAsMentee Mentorship[] @relation("Mentee")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Mentorship {
+  id String @id @default(cuid())
+
+  mentorId String
+  mentor   CommunityProfile @relation("Mentor", fields: [mentorId], references: [id])
+
+  menteeId String
+  mentee   CommunityProfile @relation("Mentee", fields: [menteeId], references: [id])
+
+  status String @default("pending") // pending, active, completed, declined
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CommunityEvent {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  date        DateTime
+  location    String?
+
+  organizerId String
+  organizer   User   @relation("EventOrganizer", fields: [organizerId], references: [id])
+
+  attendees CommunityEventAttendee[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CommunityEventAttendee {
+  id      String         @id @default(cuid())
+  eventId String
+  event   CommunityEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([eventId, userId])
+}
+
+model Notification {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type    String // "reply", "mention", "mentorship_request", "event_invite"
+  message String
+  link    String?
+  isRead  Boolean @default(false)
+
+  createdAt DateTime @default(now())
+}
+
+model Client {
+  id           String   @id @default(cuid())
+  name         String
+  companyName  String
+  logoUrl      String?
+  primaryColor String   @default("#000000") // For white-labeling
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  schedules ReportSchedule[]
+  reports   Report[]
+}
+
+model ReportSchedule {
+  id        String  @id @default(cuid())
+  clientId  String
+  client    Client  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  frequency String  @default("weekly") // "weekly", "monthly"
+  emailTo   String
+  isActive  Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Report {
+  id         String   @id @default(cuid())
+  clientId   String
+  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  date       DateTime @default(now())
+  status     String   @default("generated") // "generated", "sent"
+  
+  // JSON strings for structured storage
+  metricsData String @default("{}")
+  aiInsights  String @default("{}")
+
+  createdAt  DateTime @default(now())
+}
+
+model SubscriptionPlan {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Float
+  currency    String   @default("usd")
+  interval    String   @default("month") // month, year
+  features    String   @default("[]") // JSON string of features
+
+  subscriptions Subscription[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Subscription {
+  id                     String   @id @default(cuid())
+  userId                 String
+  user                   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planId                 String
+  plan                   SubscriptionPlan @relation(fields: [planId], references: [id])
+  status                 String   @default("incomplete") // active, past_due, canceled, incomplete
+  provider               String   // stripe, paystack, flutterwave
+  providerSubscriptionId String?
+  currentPeriodEnd       DateTime?
+
+  invoices Invoice[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Invoice {
+  id             String       @id @default(cuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscriptionId String?
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+  amount         Float
+  currency       String       @default("usd")
+  status         String       @default("open") // paid, open, void, uncollectible
+  pdfUrl         String?
+
+  payments Payment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Payment {
+  id            String   @id @default(cuid())
+  invoiceId     String
+  invoice       Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  amount        Float
+  provider      String   // stripe, paystack, flutterwave
+  status        String   @default("pending") // succeeded, failed, pending
+  transactionId String?
+
+  createdAt DateTime @default(now())
+}
+
+model Coupon {
+  id         String   @id @default(cuid())
+  code       String   @unique
+  percentOff Float?
+  amountOff  Float?
+  maxUses    Int?
+  timesUsed  Int      @default(0)
+  isActive   Boolean  @default(true)
+
+  createdAt DateTime @default(now())
+}
+
+model Team {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+
+  members    TeamMember[]
+  projects   Project[]
+  messages   TeamMessage[]
+  activities TeamActivity[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TeamMember {
+  id     String @id @default(cuid())
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role   String @default("member") // admin, manager, member
+
+  createdAt DateTime @default(now())
+
+  @@unique([teamId, userId])
+}
+
+model Project {
+  id          String  @id @default(cuid())
+  teamId      String
+  team        Team    @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  status      String  @default("active") // active, completed, on_hold
+
+  tasks TeamTask[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TeamTask {
+  id          String   @id @default(cuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assigneeId  String?
+  assignee    User?    @relation(fields: [assigneeId], references: [id], onDelete: SetNull)
+  title       String
+  description String?
+  status      String   @default("todo") // todo, in_progress, done
+  priority    String   @default("medium") // low, medium, high
+  dueDate     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TeamMessage {
+  id        String   @id @default(cuid())
+  teamId    String
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model TeamActivity {
+  id        String   @id @default(cuid())
+  teamId    String
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action    String   // e.g., "completed task", "created project"
+  entityId  String?  // ID of the related task/project
+
+  createdAt DateTime @default(now())
+}
+
+model GrowthStrategy {
+  id                  String   @id @default(cuid())
+  userId              String
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  businessType        String
+  industry            String
+  revenueModel        String
+  audience            String
+  currentMetrics      String
+  
+  actionPlan          Json     // Array of prioritized steps
+  funnelImprovements  Json     // Array of funnel optimizations
+  viralLoops          Json     // Array of viral loop suggestions
+  acquisitionChannels Json     // Array of acquisition ideas
+  
+  createdAt           DateTime @default(now())
+}
+
+model SystemLog {
+  id        String   @id @default(cuid())
+  level     String   // info, warn, error, audit
+  category  String   // auth, billing, ai_usage, system
+  message   String
+  metadata  Json?
+  createdAt DateTime @default(now())
+}
+
+// ─── Campaign & Ad Manager ────────────────────────────────────────────────────
+model AdCampaign {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  platform  String   // Google, Meta, LinkedIn, TikTok
+  status    String   @default("draft") // draft, active, paused, completed
+  budget    Float    @default(0)
+  spent     Float    @default(0)
+  startDate DateTime?
+  endDate   DateTime?
+
+  impressions Int @default(0)
+  clicks      Int @default(0)
+  conversions Int @default(0)
+  revenue     Float @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── Email / Newsletter Engine ────────────────────────────────────────────────
+model EmailCampaign {
+  id        String   @id @default(cuid())
+  userId    String
+  subject   String
+  body      String   @db.Text
+  status    String   @default("draft") // draft, scheduled, sent
+  audience  String   @default("all")   // all, leads, subscribers
+  sentAt    DateTime?
+  opens     Int      @default(0)
+  clicks    Int      @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── Social Media Scheduler ───────────────────────────────────────────────────
+model SocialPost {
+  id          String   @id @default(cuid())
+  userId      String
+  content     String   @db.Text
+  platforms   String   // comma-separated: twitter,linkedin,instagram
+  status      String   @default("draft") // draft, scheduled, published
+  scheduledAt DateTime?
+  publishedAt DateTime?
+  imageUrl    String?
+  likes       Int      @default(0)
+  shares      Int      @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── Growth Engine ────────────────────────────────────────────────────────────
+model Funnel {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  status    String   @default("active") // active, draft, archived
+  
+  steps     FunnelStep[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model FunnelStep {
+  id        String   @id @default(cuid())
+  funnelId  String
+  funnel    Funnel   @relation(fields: [funnelId], references: [id], onDelete: Cascade)
+  
+  order     Int
+  name      String
+  type      String   // page_view, opt_in, checkout, upsell
+  url       String?
+  visitors  Int      @default(0)
+  conversions Int    @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ReferralLink {
+  id           String   @id @default(cuid())
+  userId       String
+  code         String   @unique
+  clicks       Int      @default(0)
+  signups      Int      @default(0)
+  rewardAmount Float    @default(0)
+  status       String   @default("active")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model RetentionSequence {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  trigger     String   // onboarding, win_back, high_churn_risk
+  isActive    Boolean  @default(true)
+  emailsSent  Int      @default(0)
+  recovered   Int      @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ─── Marketplace Intelligence ─────────────────────────────────────────────────
+// Backs the dima "Marketplace" portal (KPIs, acquisition/GMV trends, liquidity,
+// geographic spread, cohort retention, trust metrics). Vendor onboarding funnel
+// reuses the existing Funnel/FunnelStep models; referral performance reuses the
+// existing ReferralLink model (see MarketplaceOrder.referralCode below).
+model Vendor {
+  id       String @id @default(cuid())
+  userId   String
+  name     String
+  category String
+  city     String
+  status   String  @default("applied") // applied, verified, onboarded, listed, selling
+  verified Boolean @default(false)
+
+  orders  MarketplaceOrder[]
+  reviews Review[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MarketplaceOrder {
+  id       String @id @default(cuid())
+  buyerId  String
+  buyerCity String
+  vendorId String
+  vendor   Vendor @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  category String
+  amount   Float
+
+  // Optional code linking this order back to a ReferralLink.code for
+  // referral-driven conversion tracking.
+  referralCode String?
+
+  createdAt DateTime @default(now())
+}
+
+model Review {
+  id                String  @id @default(cuid())
+  vendorId          String
+  vendor            Vendor  @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  rating            Int
+  disputed          Boolean @default(false)
+  responseTimeHours Float   @default(0)
+
+  createdAt DateTime @default(now())
+}
+
+model MarketplaceSettings {
+  id               String @id @default(cuid())
+  monthlyGmvTarget Float  @default(400000)
+
+  updatedAt DateTime @updatedAt
+}
